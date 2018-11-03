@@ -15,5 +15,5 @@ RUN dotnet publish "SampleCoreWeb.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=publish ./publish .
 ENTRYPOINT ["dotnet", "SampleCoreWeb.dll"]
