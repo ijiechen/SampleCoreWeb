@@ -6,7 +6,7 @@ FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY ["*.csproj", "src/SampleCoreWeb/"]
 RUN dotnet restore "src/SampleCoreWeb/SampleCoreWeb.csproj"
-COPY . .
+COPY . "src/SampleCoreWeb/"
 WORKDIR "/src/SampleCoreWeb"
 RUN dotnet build "SampleCoreWeb.csproj" -c Release -o /app
 
