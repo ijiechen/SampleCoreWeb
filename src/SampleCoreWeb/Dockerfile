@@ -6,11 +6,11 @@ FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY SampleCoreWeb/*.csproj ./SampleCoreWeb/
+COPY *.csproj ./SampleCoreWeb/
 RUN dotnet restore
 
 # copy everything else and build app
-COPY SampleCoreWeb/. ./SampleCoreWeb/
+COPY . ./SampleCoreWeb/
 WORKDIR /app/SampleCoreWeb
 RUN dotnet publish -c Release -o out
 
