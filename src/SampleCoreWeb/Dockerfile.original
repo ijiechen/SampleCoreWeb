@@ -4,10 +4,10 @@ EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY ["src/SampleCoreWeb/SampleCoreWeb.csproj", "src/SampleCoreWeb/"]
-RUN dotnet restore "src/SampleCoreWeb/SampleCoreWeb.csproj"
+COPY ["SampleCoreWeb/SampleCoreWeb.csproj", "SampleCoreWeb/"]
+RUN dotnet restore "SampleCoreWeb/SampleCoreWeb.csproj"
 COPY . .
-WORKDIR "/src/src/SampleCoreWeb"
+WORKDIR "/src/SampleCoreWeb"
 RUN dotnet build "SampleCoreWeb.csproj" -c Release -o /app
 
 FROM build AS publish
@@ -15,5 +15,5 @@ RUN dotnet publish "SampleCoreWeb.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=publish /app/SampleCoreWeb/out .
 ENTRYPOINT ["dotnet", "SampleCoreWeb.dll"]
