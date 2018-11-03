@@ -4,8 +4,8 @@ EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY ["SampleCoreWeb.csproj", "src/SampleCoreWeb/"]
-RUN dotnet restore "src/SampleCoreWeb.csproj"
+COPY ["*.csproj", "./SampleCoreWeb/"]
+RUN dotnet restore
 COPY . .
 WORKDIR "/src/SampleCoreWeb"
 RUN dotnet build "SampleCoreWeb.csproj" -c Release -o /app
