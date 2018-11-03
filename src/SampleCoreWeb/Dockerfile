@@ -3,17 +3,20 @@ WORKDIR /app
 EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk AS build
-WORKDIR /src
-COPY ["SampleCoreWeb/SampleCoreWeb.csproj", "SampleCoreWeb/"]
-RUN dotnet restore "SampleCoreWeb/SampleCoreWeb.csproj"
-COPY . .
-WORKDIR "/src/SampleCoreWeb"
-RUN dotnet build "SampleCoreWeb.csproj" -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish "SampleCoreWeb.csproj" -c Release -o /app
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app .
+
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY SampleCoreWeb/*.csproj ./SampleCoreWeb/
+RUN dotnet restore
+
+# copy everything else and build app
+COPY SampleCoreWeb/. ./SampleCoreWeb/
+WORKDIR /app/SampleCoreWeb
+RUN dotnet publish -c Release -o out
+
+
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
+WORKDIR /app
+COPY --from=build /app/SampleCoreWeb/out ./
 ENTRYPOINT ["dotnet", "SampleCoreWeb.dll"]
