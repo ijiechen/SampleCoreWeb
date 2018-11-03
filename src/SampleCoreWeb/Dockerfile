@@ -8,7 +8,7 @@ COPY ["*.csproj", "src/SampleCoreWeb/"]
 RUN dotnet restore "src/SampleCoreWeb/SampleCoreWeb.csproj"
 COPY . "src/SampleCoreWeb/"
 WORKDIR "/src/SampleCoreWeb"
-RUN dotnet build "SampleCoreWeb.csproj" -c Release -o /app
+RUN dotnet build -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish "SampleCoreWeb.csproj" -c Release -o /app
